@@ -35,7 +35,7 @@ jobs:
           server-id: github
           settings-path: ${{ github.workspace }}
       - name: Bump-up version
-        uses: kalyan-mallajosyula/mvn-version-bumper
+        uses: kalyan-mallajosyula/mvn-version-bumper@v1
         with:
             trigger_event: ${{ github.event_name }}
             branch_name: ${{ github.ref_name }}
