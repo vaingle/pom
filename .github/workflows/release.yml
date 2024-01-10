@@ -23,6 +23,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
         with:
+          token: ${{ secrets.PAT_1 }}
           ref: ${{ github.ref }}
           fetch-depth: '0'
       - name: Setup Java 17 and Maven
@@ -39,3 +40,4 @@ jobs:
         with:
             trigger_event: ${{ github.event_name }}
             branch_name: ${{ github.ref_name }}
+            token: ${{ secrets.MY_PAT }}
