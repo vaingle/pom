@@ -10,10 +10,9 @@ on:
     branches:
       - release/**
 permissions:
-  contents: read
+  contents: write
   packages: write
   actions: write
-  contents: write
 jobs:
   build:
     runs-on: ubuntu-latest
