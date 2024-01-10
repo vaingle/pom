@@ -44,7 +44,7 @@ jobs:
       - name: Run custom script
         run: |
           chmod +x mvn-version-bumper/versioning.sh
-          mvn-version-bumper/versioning.sh
+          mvn-version-bumper/versioning.sh $BRANCH_NAME $TRIGGER_EVENT
         env:
           TRIGGER_EVENT: ${{ github.event_name }}
           BRANCH_NAME: ${{ github.ref_name }}
