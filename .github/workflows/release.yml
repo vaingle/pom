@@ -1,0 +1,41 @@
+# Add a condition that makes sure that a push to origin by the Github Action does not trigger this or any other action. 
+name: Build package on release branches
+run-name: Build initiated by ${{ github.actor }}
+on:
+  create:
+    branches:
+      - 'release/**'
+  pull_request:
+    types: [closed]
+    branches:
+      - release/**
+permissions:
+  contents: read
+  packages: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: >
+        (github.actor != 'Github Action') &&
+        ((github.ref_type == 'branch' && startsWith(github.ref, 'refs/heads/release/')) || 
+        (github.event_name == 'pull_request' && github.event.pull_request.merged == true && startsWith(github.event.pull_request.base.ref, 'release/')))
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: '0'
+      - name: Setup Java 17 and Maven
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'oracle'
+          java-version: '17'
+          cache: 'maven'
+          cache-dependency-path: 'pom.xml'
+          server-id: github
+          settings-path: ${{ github.workspace }}
+      - name: Bump-up version
+        uses: kalyan-mallajosyula/mvn-version-bumper
+        with:
+            trigger_event: ${{ github.event_name }}
+            branch_name: ${{ github.ref_name }}
